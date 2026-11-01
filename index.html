@@ -21,13 +21,24 @@
 </head>
 <body>
   <header class="app-header">
-    <h1 class="markets-title">⚽ Внутренняя модель v1 — угловые и жёлтые карточки</h1>
+    <h1 class="markets-title">⚽ Внутренняя модель — самостоятельный расчёт рынков</h1>
     <p class="subtitle" id="markets-date">Загрузка данных…</p>
     <div class="status-bar"><span class="status-badge">Гибридное распределение Poisson / NB2</span><button id="refresh-btn" type="button">Обновить</button></div>
     <a class="markets-back" href="https://he-sytikova.github.io/betting/markets.html">← К внешним прогнозам и общей таблице</a>
     <a class="markets-back" href="https://he-sytikova.github.io/betting/">На production-сайт</a>
   </header>
   <main>
+    <section class="card" style="margin:16px 0;padding:14px">
+      <h2>Самостоятельный расчёт голевых рынков</h2>
+      <p class="markets-note" id="goals-model-status">Загрузка независимой модели голов…</p>
+      <div class="table-wrapper">
+        <table class="markets-table" style="min-width:1700px">
+          <thead><tr><th>Время</th><th>Лига</th><th>Хозяева</th><th>Гости</th><th>1X2</th><th>Двойной шанс</th><th>Тотал матча</th><th>Обе забьют</th><th>Инд. тоталы</th><th>Точные счета (топ-3)</th><th>Фора по голам</th><th>Ожидаемые голы λ</th></tr></thead>
+          <tbody id="goals-markets-body"></tbody>
+        </table>
+      </div>
+      <p id="goals-markets-empty" class="empty-state hidden">Нет доступных матчей с сопоставленными командами и историей.</p>
+    </section>
     <div id="markets-error" class="error-container hidden"></div>
     <div class="markets-controls">
       <select id="market-type" aria-label="Тип прогноза">
@@ -50,5 +61,6 @@
   </main>
   <footer><p>Экспериментальная исследовательская версия. Не является рекомендацией для ставок и не подтверждает доходность.</p></footer>
   <script src="model-v1.js"></script>
+  <script src="goals-markets.js"></script>
 </body>
 </html>
