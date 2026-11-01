@@ -20,14 +20,14 @@
   }
   function scoreMarkets(homeMean, awayMean) {
     const max = 12, hp = pmf(homeMean,max), ap = pmf(awayMean,max);
-    const cells = [];
+
     let total = 0, home=0, draw=0, away=0, btts=0;
     const totals = [0.5,1.5,2.5,3.5,4.5,5.5].map(line=>({line,over:0}));
     const homeTotals = [0.5,1.5,2.5].map(line=>({line,over:0}));
     const awayTotals = [0.5,1.5,2.5].map(line=>({line,over:0}));
     const handicaps = [-1.5,-0.5,0.5,1.5].map(line=>({line,win:0}));
     for(let h=0;h<=max;h++) for(let a=0;a<=max;a++){
-      const p=hp[h]*ap[a]; total+=p; cells.push({h,a,p});
+      const p=hp[h]*ap[a]; total+=p;
       if(h>a) home+=p; else if(h===a) draw+=p; else away+=p;
       if(h>0&&a>0) btts+=p;
       for(const x of totals) if(h+a>x.line) x.over+=p;
@@ -36,14 +36,12 @@
       for(const x of handicaps) if(h-a+x.line>0) x.win+=p;
     }
     const pct=x=>(100*x/total).toFixed(1)+"%";
-    const top=cells.sort((x,y)=>y.p-x.p).slice(0,3).map(x=>x.h+":"+x.a+" "+pct(x.p)).join(" · ");
     return {
       outcome:"П1 "+pct(home)+" / X "+pct(draw)+" / П2 "+pct(away),
       doubleChance:"1X "+pct(home+draw)+" / 12 "+pct(home+away)+" / X2 "+pct(draw+away),
       totals:totals.map(x=>"ТБ"+x.line+" "+pct(x.over)+" / ТМ "+pct(total-x.over)).join("\n"),
       btts:"Да "+pct(btts)+" / Нет "+pct(total-btts),
       teamTotals:"Х: "+homeTotals.map(x=>x.line+"+ "+pct(x.over)).join(" · ")+"\nГ: "+awayTotals.map(x=>x.line+"+ "+pct(x.over)).join(" · "),
-      correct:top,
       handicap:handicaps.map(x=>(x.line>0?"+":"")+x.line+" "+pct(x.win)).join(" · ")
     };
   }
@@ -90,7 +88,7 @@
       body.replaceChildren();
       for(const x of rows){
         const tr=document.createElement("tr");
-        const vals=[new Date(x.time).toLocaleString("ru-RU",{timeZone:"Europe/Moscow",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}),x.league,x.home,x.away,x.outcome,x.doubleChance,x.totals,x.btts,x.teamTotals,x.correct,x.handicap,"λ "+x.hm.toFixed(2)+" / "+x.am.toFixed(2)];
+        const vals=[new Date(x.time).toLocaleString("ru-RU",{timeZone:"Europe/Moscow",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}),x.league,x.home,x.away,x.outcome,x.doubleChance,x.totals,x.btts,x.teamTotals,x.handicap,"λ "+x.hm.toFixed(2)+" / "+x.am.toFixed(2)];
         for(const value of vals){const td=document.createElement("td");td.textContent=value;td.style.whiteSpace="pre-line";tr.appendChild(td);}
         body.appendChild(tr);
       }
