@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '15 * * * *'
 permissions:
   contents: read
   pages: write
@@ -21,6 +23,8 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Refresh match data from production feed
+        run: curl --fail --silent --show-error --location 'https://he-sytikova.github.io/betting/data.json' --output data.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
