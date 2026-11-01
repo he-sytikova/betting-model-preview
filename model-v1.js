@@ -91,7 +91,7 @@ function formatTotals(mean, market) {
     if (over === null) return '';
     const label = distribution === 'negativeBinomial' ? 'NB2' : 'Poisson';
     return 'ТБ ' + line + ': ' + (over * 100).toFixed(1) + '% / ТМ: ' + ((1 - over) * 100).toFixed(1) + '% (' + label + ')';
-  }).join(' · ');
+  }).filter(Boolean).join('\n');
 }
 function makeModelRows(fixtures) {
   if (!productionModels?.models || !productionModels?.teams || !productionModels?.leagueNames) return [];
@@ -171,6 +171,7 @@ function colorMarketCells(row) {
     cell.style.backgroundColor = '#fff';
     cell.style.color = '#000';
     if (cell.cellIndex < 5) continue;
+    cell.style.whiteSpace = 'pre-line';
     const nums = Array.from(cell.textContent.matchAll(/([0-9]+(?:[.,][0-9]+)?)\s*%/g), match =>
       Number.parseFloat(match[1].replace(',', '.'))
     ).filter(Number.isFinite);
