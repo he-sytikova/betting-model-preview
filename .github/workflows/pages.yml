@@ -25,6 +25,10 @@ jobs:
           enablement: true
       - name: Refresh match data from production feed
         run: curl --fail --silent --show-error --location 'https://he-sytikova.github.io/betting/data.json' --output data.json
+      - name: Refresh independent goals model from development branch
+        run: |
+          mkdir -p data
+          curl --fail --silent --show-error --location 'https://raw.githubusercontent.com/he-sytikova/betting/model-development/data/goals_markets_models.json' --output data/goals_markets_models.json || echo 'Goal model artifact is not published yet; page will show availability notice.'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
